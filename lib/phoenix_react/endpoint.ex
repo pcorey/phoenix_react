@@ -1,15 +1,16 @@
 defmodule PhoenixReact.Endpoint do
   use Phoenix.Endpoint, otp_app: :phoenix_react
 
+  plug Plug.Static.IndexHtml,
+    at: "/"
+
   socket "/socket", PhoenixReact.UserSocket
 
-  # Serve at "/" the static files from "priv/static" directory.
-  #
-  # You should set gzip to true if you are running phoenix.digest
-  # when deploying your static files in production.
   plug Plug.Static,
-    at: "/", from: :phoenix_react, gzip: false,
-    only: ~w(css fonts images js favicon.ico robots.txt)
+    at: "/",
+    from: "priv/inject-detect/build/",
+    gzip: false,
+    only: ~w(index.html favicon.ico static)
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
@@ -35,6 +36,8 @@ defmodule PhoenixReact.Endpoint do
     store: :cookie,
     key: "_phoenix_react_key",
     signing_salt: "N+klYXtL"
+
+  plug CORSPlug, origin: ["http://localhost:3000", "http://localhost:4000"]
 
   plug PhoenixReact.Router
 end
