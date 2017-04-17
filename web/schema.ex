@@ -3,13 +3,13 @@ defmodule PhoenixReact.Schema do
 
   import_types PhoenixReact.Schema.Types
 
-  def resolve(_args, _context) do
+  def resolve_posts(_args, _context) do
     {:ok, [%{id: 1, title: "Title #1", body: "This is a post."}]}
   end
 
   query do
     field :posts, list_of(:post) do
-      resolve &resolve/2
+      resolve &resolve_posts/2
     end
   end
 
